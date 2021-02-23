@@ -1,18 +1,42 @@
+import dataclasses
+import aiofiles
 import asyncio
 import sqlite3
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from pydantic.dataclasses import dataclass
 
-# from dataclasses import dataclass
+#from dataclasses import dataclass
+#
+#@dataclass(frozen=True)
+#class Links:
+#    title: str
+#    url: str
+
 
 app = FastAPI()
 
+# https://fastapi.tiangolo.com/tutorial/cors/
+origins = [
+    "http://ilmare.familjenberger.com:8000",
+    "https://ilmare.familjenberger.com:8000",
+    "http://localhost:8000",
+    "https://localhost:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    #allow_origins=origins,
+    allow_origins=['*'],
+)
 
 # Read from Database with SQLite
-
+#connection = sqlite3.connect('/home/ilmare/.local/share/url-bot-rs/history.dtek.db')
 connection = sqlite3.connect('history.dtek.db')
 cursor = connection.cursor()
+
 
 def readFromDB():
     cursor.execute('SELECT title, url FROM posts')
@@ -30,26 +54,9 @@ async def root_get():
    data = readFromDB()
    return {"message": data }
 
-# POST request for root.
-@app.post("/")
-async def root_post():
-    data = readFromDB()
-    return {"message": data }
-
-
-#prepare_for_foo()
-#task = loop.create_task(foo())
-#remaining_work_not_depends_on_foo()
-#loop.run_until_complete(task)
-
-##loop = asyncio.get_event_loop()
-
-# To be used when run as an API.
-#async def main():
-#    if __name__ == "__main__":
-#        await readFromDB()
-#        #asyncio.run(main())
-
+@app.get("static/")
+async def static_get():
+    return {"message": "All your static/GET is belong to us."}
 
 
 
