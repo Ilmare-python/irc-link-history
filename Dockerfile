@@ -1,6 +1,9 @@
-FROM fedora:32
-RUN dnf install -y python-pip \
-    && dnf clean all \
-    && pip install fastapi uvicorn aiofiles
-WORKDIR /srv
-CMD ["uvicorn", "main:app", "--reload"]
+FROM python:3.9
+
+RUN pip install fastapi uvicorn
+
+EXPOSE 8000
+
+COPY ./app /app
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
