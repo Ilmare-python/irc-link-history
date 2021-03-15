@@ -1,4 +1,22 @@
 var root = document.body
+var target = document.createElement("div")
+
+var SpotifyData = { list: [] }
+var YoutubeData = { list: [] }
+var PDFData     = { list: [] }
+var AllitemsData ={ list: [] }
+var APIData     = { list: [] }
+
+
+var Points     = {
+    list: [ "/" ,
+            "/Spotify",
+            "/Youtube",
+            "/PDF",
+            "/Allitems"
+    ]
+}
+
 
 function getData(uri, struct) {
     m.request({
@@ -7,8 +25,8 @@ function getData(uri, struct) {
     })
     .then(function(result) {
         //console.log(result)
-
-        /*console.log(JSON.parse(JSON.stringify(result.message[0])))
+        /*
+        console.log(JSON.parse(JSON.stringify(result.message[0])))
         console.log(result.message[0])
         result.message.forEach(element => {
             console.log(element)
@@ -18,67 +36,49 @@ function getData(uri, struct) {
     })
 }
 
-var SpotifyData = {
-        list: []
+function createParagraph(item) {
+    var paragraph = document.createElement("P")
+    paragraph.innerHTML = "<a href=\"" + item[1] + "\">" + item[0] + "</a>"
+    document.getElementById("main").appendChild(paragraph)
 }
 
-var YoutubeData = {
-    list: []
+function foo(){
 }
 
-var PDFData = {
-    list: []
-}
-
-var AllitemsData = {
-    list: []
-}
-
-var APIData = {
-    list: ["/" ,
-        "/Spotify",
-        "/Youtube",
-        "/PDF",
-        "/Allitems"
-    ]
-}
-
-//var count = 0;
 var Start = {
-    //oninit: getData("http://localhost:8000/openapi.json", APIData),
+    oninit: foo(),
     view: function(vnode) {
-        return APIData.list.map(function(item){
+        document.getElementById("navbar").innerHTML = ""
+        
+        return Points.list.map(function(item) {
+            //document.getElementById("main").innerHTML = "";
+            //console.log(item)
             link = "#!/" + item
             title = item.split("/")
-            //return m("a", {href: link}, title) //Fungerar
-            //return m("button", {onclick: function() {location.assign(link)}}, title ) //Fungerar
-            return m(m.route.Link, {href: item}, title)
-        })
-    }
+            title = title[1]
+            var paragraph = document.createElement("div")
+            paragraph.innerHTML = "<a href=\"" + link + "\">" + title + "</a>"
+            document.getElementById("navbar").appendChild(paragraph)
+    })
+}
 }
 
 var Spotify = {
     oninit: getData("http://localhost:8000/Spotify",SpotifyData),
     view: function(vnode) {
+        document.getElementById("main").innerHTML = ""
         return SpotifyData.list.map(function(item) {
-            //console.log(item[0])    // Name
-            //console.log(item[1])    // URL
-            //return m("div", item)
-            return m("a", {href: item[1]}, item[0])
+            createParagraph(item)
         })
     }
 }
 
-
 var Youtube = {
     oninit: getData("http://localhost:8000/Youtube", YoutubeData),
     view: function(vnode) {
+        document.getElementById("main").innerHTML = ""
         return YoutubeData.list.map(function(item) {
-            //console.log(YoutubeData)
-            //console.log(item[0])    // Name
-            //console.log(item[1])    // URL
-            return m("a", {href: item[1]}, item[0])  //Fungerar
-            //return m.render(document.body, m("a", {href: item[1]}, item[0]))
+            createParagraph(item)
         })
     }
 }
@@ -86,11 +86,9 @@ var Youtube = {
 var PDFs = {
     oninit: getData("http://localhost:8000/PDF", PDFData),
     view: function(vnode) {
+        document.getElementById("main").innerHTML = ""
         return PDFData.list.map(function(item) {
-            //console.log(item[0])    // Name
-            //console.log(item[1])    // URL
-            //return m("div", item)
-            return m("a", {href: item[1]}, item[0])
+            createParagraph(item)
         })
     }
 }
@@ -98,19 +96,36 @@ var PDFs = {
 var Allitems = {
     oninit: getData("http://localhost:8000/Allitems", AllitemsData),
     view: function(vnode) {
+        document.getElementById("main").innerHTML = ""
         return AllitemsData.list.map(function(item) {
-            //console.log(item[0])    // Name
-            //console.log(item[1])    // URL
-            //return m("div", item)
-            return m("a", {href: item[1]}, item[0])
+            createParagraph(item)
         })
     }
 }
 
-m.route(document.body, "/", {
+//m.route(target, "/", {
+m.route(target, "/", {
     "/": Start,
     "/Youtube": Youtube ,
     "/Spotify" : Spotify,
     "/PDF": PDFs,
     "/Allitems": Allitems
 })
+ 
+
+/*
+    return m("a", {href: item[1]}, item[0])
+    return m("a", {href: link}, title)
+    return m("button", {onclick: function() {location.assign(link)}}, title ) //Fungerar
+    return m.render(document.body, m("a", {href: item[1]}, item[0]))
+    return m(m.route.Link, {href: item}, title)
+    return m("div", item)
+*/
+
+/* Create a list.
+    var node = document.createElement("LI")
+    var textnode = document.createTextNode(item[0])
+    node.appendChild(textnode)
+    document.getElementById("links").appendChild(node)
+*/
+

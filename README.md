@@ -17,10 +17,23 @@ docker container rm irc-link-history-container
 ## Develop
 
 ```sh
-virualenv env   # Only needed the first time.
-docker run -dit --name apache2 -p 80:80 -v $PWD/:/usr/local/apache2/htdocs/ httpd:2.4
+cd irc-link-history/public-html
+docker run -it --name apache2 -p 80:80 -v $PWD/:/usr/local/apache2/htdocs/ httpd:2.4 # use -dit instead of -it to hide output from the webserver.
+cd ..
+virualenv env   # Only needed the first time, or when new dependencies are added.
 source env/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt # Only needed when new dependencies are added.
 cd app
 uvicorn main:app --reload
+# This is how you stop
+docker stop apache2
+docker container rm apache2
 ```
+
+## Bugs
+
+* Correct assignment of the `route` element to a `div`..
+
+## Further Reading
+
+MithrilJs tutorial [part 1](https://gilbert.ghost.io/mithril-js-tutorial-1/),  [part 2](https://gilbert.ghost.io/mithril-js-tutorial-2/) and [source code](https://github.com/gilbert/blog-post-examples/tree/gh-pages/mithril-2).
