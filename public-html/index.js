@@ -1,8 +1,8 @@
 var root = document.body
 var target = document.createElement("div")
 
-const developlment  = "http://localhost:8000/"
-const production    = "http://ilmare.familjenberger.com:8000/"
+const uriToAPI  = "http://ilmare.familjenberger.com:8000/" 
+//For development use "http://localhost:8000/"
 
 var SpotifyData = { list: [] }
 var YoutubeData = { list: [] }
@@ -82,27 +82,39 @@ var Start = {
 }
 
 var Spotify = {
-	oninit: getData(developlment + "Spotify", SpotifyData),
+	oninit: getData(uriToAPI + "Spotify", SpotifyData),
     view: function(vnode) {
-        document.getElementById("main").innerHTML = ""
-        return SpotifyData.list.map(function(item) {
-            createParagraph(item)
-        })
+        if(SpotifyData.list.length == 0) {
+            document.getElementById("main").innerHTML = ""
+            createErrorParagraph(SpotifyData.error.code, SpotifyData.error.response.detail)
+        }
+        else {
+            document.getElementById("main").innerHTML = ""
+            return SpotifyData.list.map(function(item) {
+                createParagraph(item)
+            })
+        }
     }
 }
 
 var Youtube = {
-	oninit: getData(developlment + "Youtube", YoutubeData),
+	oninit: getData(uriToAPI + "Youtube", YoutubeData),
     view: function(vnode) {
-        document.getElementById("main").innerHTML = ""
-        return YoutubeData.list.map(function(item) {
-            createParagraph(item)
-        })
+        if(YoutubeData.list.length == 0) {
+            document.getElementById("main").innerHTML = ""
+            createErrorParagraph(YoutubeData.error.code, YoutubeData.error.response.detail)
+        }
+        else {
+            document.getElementById("main").innerHTML = ""
+            return YoutubeData.list.map(function(item) {
+                createParagraph(item)
+            })
+        }
     }
 }
 
 var PDFs = {
-    oninit: getData(developlment + "PDF", PDFData),
+    oninit: getData(uriToAPI + "PDF", PDFData),
     view: function(vnode) {
         if(PDFData.list.length == 0) {
             document.getElementById("main").innerHTML = ""
@@ -118,7 +130,7 @@ var PDFs = {
 }
 
 var Allitems = {
-    oninit: getData(developlment + "Allitems", AllitemsData),
+    oninit: getData(uriToAPI + "Allitems", AllitemsData),
     view: function(vnode) {
         if(AllitemsData.list.length == 0) {
             document.getElementById("main").innerHTML = ""
@@ -134,7 +146,7 @@ var Allitems = {
 }
 
 var ErrorTest = {
-    oninit: getData(developlment + "PDFs", ErrorData),
+    oninit: getData(uriToAPI + "PDFs", ErrorData),
     view: function(vnode) {
         //console.log(ErrorData.error.code)
         if(ErrorData.list.length == 0) {
@@ -157,11 +169,9 @@ m.route(target, "/", {
     "/Youtube": Youtube ,
     "/Spotify" : Spotify,
     "/PDF": PDFs,
-    "/Allitems": Allitems,
-    "/ErrorTest": ErrorTest
+    "/Allitems": Allitems
 })
  
-
 /*
     return m("a", {href: item[1]}, item[0])
     return m("a", {href: link}, title)
