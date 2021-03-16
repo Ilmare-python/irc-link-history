@@ -1,10 +1,5 @@
 # README
 
-## Build and run a release
-
-Note that this will not reload if changes are made in for example `main.py`.
-Adapted from the [FastAPI tutorial](https://fastapi.tiangolo.com/deployment/docker/).
-
 ## Run as a Developer
 
 ```sh
@@ -23,7 +18,7 @@ docker container rm apache2
 
 ## Bugs
 
-* Correct assignment of the `route` element to a `div`..
+* Correct assignment of the `route` element to a `div`.
 
 ## Further Reading
 

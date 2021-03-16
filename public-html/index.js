@@ -1,19 +1,23 @@
 var root = document.body
 var target = document.createElement("div")
 
+const developlment  = "http://localhost:8000/"
+const production    = "http://ilmare.familjenberger.com:8000/"
+
 var SpotifyData = { list: [] }
 var YoutubeData = { list: [] }
 var PDFData     = { list: [] }
 var AllitemsData ={ list: [] }
 var APIData     = { list: [] }
-
+var ErrorData   = { list: [] }
 
 var Points     = {
     list: [ "/" ,
             "/Spotify",
             "/Youtube",
             "/PDF",
-            "/Allitems"
+            "/Allitems",
+            "/ErrorTest"
     ]
 }
 
@@ -34,11 +38,25 @@ function getData(uri, struct) {
         */
         struct.list = result
     })
+    .catch(function(e) {
+        struct.error = e
+        //console.log(struct.error.code)
+        //console.log(struct.error.response.detail)
+    })
 }
 
 function createParagraph(item) {
     var paragraph = document.createElement("P")
     paragraph.innerHTML = "<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"" + item[1] + "\">" + item[0] + "</a>"
+    document.getElementById("main").appendChild(paragraph)
+}
+
+function createErrorParagraph(code, details) {
+    // console.log(item)
+    var paragraph = document.createElement("P")
+    paragraph.innerHTML = "The back end is probably on coffee break and static fall back pages are still not implemented. " + 
+    "The Error code is " + code + "."
+    //" and the message " + details
     document.getElementById("main").appendChild(paragraph)
 }
 
@@ -64,7 +82,7 @@ var Start = {
 }
 
 var Spotify = {
-	oninit: getData("http://ilmare.familjenberger.com:8000/Spotify", SpotifyData),
+	oninit: getData(developlment + "Spotify", SpotifyData),
     view: function(vnode) {
         document.getElementById("main").innerHTML = ""
         return SpotifyData.list.map(function(item) {
@@ -74,7 +92,7 @@ var Spotify = {
 }
 
 var Youtube = {
-	oninit: getData("http://ilmare.familjenberger.com:8000/Youtube", YoutubeData),
+	oninit: getData(developlment + "Youtube", YoutubeData),
     view: function(vnode) {
         document.getElementById("main").innerHTML = ""
         return YoutubeData.list.map(function(item) {
@@ -84,22 +102,52 @@ var Youtube = {
 }
 
 var PDFs = {
-    oninit: getData("http://ilmare.familjenberger.com:8000/PDF", PDFData),
+    oninit: getData(developlment + "PDF", PDFData),
     view: function(vnode) {
-        document.getElementById("main").innerHTML = ""
-        return PDFData.list.map(function(item) {
-            createParagraph(item)
-        })
+        if(PDFData.list.length == 0) {
+            document.getElementById("main").innerHTML = ""
+            createErrorParagraph(PDFData.error.code, PDFData.error.response.detail)
+        }
+        else {
+            document.getElementById("main").innerHTML = ""
+            return PDFData.list.map(function(item) {
+                createParagraph(item)
+            })
+        }
     }
 }
 
 var Allitems = {
-    oninit: getData("http://ilmare.familjenberger.com:8000/Allitems", AllitemsData),
+    oninit: getData(developlment + "Allitems", AllitemsData),
     view: function(vnode) {
-        document.getElementById("main").innerHTML = ""
-        return AllitemsData.list.map(function(item) {
-            createParagraph(item)
-        })
+        if(AllitemsData.list.length == 0) {
+            document.getElementById("main").innerHTML = ""
+            createErrorParagraph(AllitemsData.error.code, AllitemsData.error.response.detail)
+        }
+        else {
+            document.getElementById("main").innerHTML = ""
+            return AllitemsData.list.map(function(item) {
+                createParagraph(item)
+            })
+        }
+    }
+}
+
+var ErrorTest = {
+    oninit: getData(developlment + "PDFs", ErrorData),
+    view: function(vnode) {
+        //console.log(ErrorData.error.code)
+        if(ErrorData.list.length == 0) {
+            //console.log(ErrorData)
+            document.getElementById("main").innerHTML = ""
+            createErrorParagraph(ErrorData.error.code, ErrorData.error.response.detail)
+        }
+        else {
+            document.getElementById("main").innerHTML = ""
+            return ErrorData.list.map(function(item) {
+                createParagraph(item)
+            })
+        }
     }
 }
 
@@ -109,7 +157,8 @@ m.route(target, "/", {
     "/Youtube": Youtube ,
     "/Spotify" : Spotify,
     "/PDF": PDFs,
-    "/Allitems": Allitems
+    "/Allitems": Allitems,
+    "/ErrorTest": ErrorTest
 })
  
 
