@@ -12,16 +12,19 @@ app = FastAPI()
 
 # https://fastapi.tiangolo.com/tutorial/cors/
 origins = [
-    "http://ilmare.familjenberger.com:8000",
-    "https://ilmare.familjenberger.com:8000",
+    "http://ilmare.familjenberger.com",
+    "https://ilmare.familjenberger.com",
     "http://localhost:8000",
     "https://localhost:8000",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    #allow_origins=origins,
-    allow_origins=['*'],
+    allow_origins=origins,
+    #allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 try:

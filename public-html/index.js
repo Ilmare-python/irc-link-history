@@ -38,7 +38,7 @@ function getData(uri, struct) {
 
 function createParagraph(item) {
     var paragraph = document.createElement("P")
-    paragraph.innerHTML = "<a href=\"" + item[1] + "\">" + item[0] + "</a>"
+    paragraph.innerHTML = "<a target=\"_blank\" rel=\"noopener noreferrer\" href=\"" + item[1] + "\">" + item[0] + "</a>"
     document.getElementById("main").appendChild(paragraph)
 }
 
@@ -49,7 +49,7 @@ var Start = {
     oninit: foo(),
     view: function(vnode) {
         document.getElementById("navbar").innerHTML = ""
-        
+
         return Points.list.map(function(item) {
             //document.getElementById("main").innerHTML = "";
             //console.log(item)
@@ -64,7 +64,7 @@ var Start = {
 }
 
 var Spotify = {
-    oninit: getData("http://localhost:8000/Spotify",SpotifyData),
+	oninit: getData("http://ilmare.familjenberger.com:8000/Spotify", SpotifyData),
     view: function(vnode) {
         document.getElementById("main").innerHTML = ""
         return SpotifyData.list.map(function(item) {
@@ -74,7 +74,7 @@ var Spotify = {
 }
 
 var Youtube = {
-    oninit: getData("http://localhost:8000/Youtube", YoutubeData),
+	oninit: getData("http://ilmare.familjenberger.com:8000/Youtube", YoutubeData),
     view: function(vnode) {
         document.getElementById("main").innerHTML = ""
         return YoutubeData.list.map(function(item) {
@@ -84,7 +84,7 @@ var Youtube = {
 }
 
 var PDFs = {
-    oninit: getData("http://localhost:8000/PDF", PDFData),
+    oninit: getData("http://ilmare.familjenberger.com:8000/PDF", PDFData),
     view: function(vnode) {
         document.getElementById("main").innerHTML = ""
         return PDFData.list.map(function(item) {
@@ -94,7 +94,7 @@ var PDFs = {
 }
 
 var Allitems = {
-    oninit: getData("http://localhost:8000/Allitems", AllitemsData),
+    oninit: getData("http://ilmare.familjenberger.com:8000/Allitems", AllitemsData),
     view: function(vnode) {
         document.getElementById("main").innerHTML = ""
         return AllitemsData.list.map(function(item) {
