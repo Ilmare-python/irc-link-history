@@ -12,20 +12,25 @@ app = FastAPI()
 
 # https://fastapi.tiangolo.com/tutorial/cors/
 origins = [
-    "http://ilmare.familjenberger.com",
-    "https://ilmare.familjenberger.com",
-    "http://localhost",
-    "https://localhost",
+    "http://ilmare.familjenberger.com:8000",
+    "https://ilmare.familjenberger.com:8000",
+    "http://ilmare.familjenberger.com:80",
+    "https://ilmare.familjenberger.com:80",
+    "http://localhost:8000/",
+    "https://localhost:8000/",
+    "http://localhost:80/",
+    "https://localhost:80/",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    #allow_origins=['*'],
+    #allow_origins=origins,
+    allow_origins=['*'], 
     allow_credentials=True,
-    allow_methods=["GET"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 try:
     connection = sqlite3.connect('history.dtek.db')

@@ -4,7 +4,7 @@
 
 ```sh
 cd irc-link-history/public-html
-docker run -it --name apache2 -p 80:80 -v $PWD/:/usr/local/apache2/htdocs/ httpd:2.4 # use -dit instead of -it to hide output from the webserver.
+docker run -it --name apache2 -p 80:80 -v $PWD/:/usr/local/apache2/htdocs/ httpd:2.4
 cd ..
 virualenv env   # Only needed the first time, or when new dependencies are added.
 source env/bin/activate
@@ -14,6 +14,27 @@ uvicorn main:app --reload
 # This is how you stop
 docker stop apache2
 docker container rm apache2
+```
+
+## Prepare for Production
+
+```sh
+cd irc-link-history/public-html
+docker run -dit --name apache2 -p 80:80 -v $PWD/:/usr/local/apache2/htdocs/ httpd:2.4
+# Make sure const uriToAPI is correct.
+docker build --compress -t irc-link-history:0.1 . # Number corresponding to version number in Changelog
+docker run --name irc-link-history -p 8000:8000 irc-link-history
+# Make sure both localhost:8000 and localhost:8000 is working correctly.
+docker save irc-link-history -o irc-link-history.dockerfs
+# scp over to the production server
+```
+
+## Run on Server
+
+```sh
+docker run --rm -dit --name apache2 -p 80:80 -v $PWD/:/usr/local/apache2/htdocs/ httpd:2.4
+docker import irc-link-history -i irc-link-history.dockerfs
+docker run --rm --name irc-link-history -p 8000:8000 irc-link-history
 ```
 
 ## Bugs

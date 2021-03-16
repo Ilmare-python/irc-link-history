@@ -1,8 +1,8 @@
 var root = document.body
 var target = document.createElement("div")
 
-const uriToAPI  = "http://ilmare.familjenberger.com:8000/" 
-//For development use "http://localhost:8000/"
+//const uriToAPI  = "http://ilmare.familjenberger.com:8000/" // For production
+const uriToAPI  = "http://localhost:8000/"  //For development
 
 var SpotifyData = { list: [] }
 var YoutubeData = { list: [] }
@@ -17,7 +17,6 @@ var Points     = {
             "/Youtube",
             "/PDF",
             "/Allitems",
-            "/ErrorTest"
     ]
 }
 
@@ -145,23 +144,6 @@ var Allitems = {
     }
 }
 
-var ErrorTest = {
-    oninit: getData(uriToAPI + "PDFs", ErrorData),
-    view: function(vnode) {
-        //console.log(ErrorData.error.code)
-        if(ErrorData.list.length == 0) {
-            //console.log(ErrorData)
-            document.getElementById("main").innerHTML = ""
-            createErrorParagraph(ErrorData.error.code, ErrorData.error.response.detail)
-        }
-        else {
-            document.getElementById("main").innerHTML = ""
-            return ErrorData.list.map(function(item) {
-                createParagraph(item)
-            })
-        }
-    }
-}
 
 //m.route(target, "/", {
 m.route(target, "/", {
