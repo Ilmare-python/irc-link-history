@@ -1,8 +1,8 @@
 var root = document.body
 var target = document.createElement("div")
 
-//const uriToAPI  = "http://ilmare.familjenberger.com:8000/" // For production
-const uriToAPI  = "http://localhost:8000/"  //For development
+const uriToAPI  = "http://ilmare.familjenberger.com:8000/" // For production
+//const uriToAPI  = "http://localhost:8000/"  //For development
 
 var SpotifyData = { list: [] }
 var YoutubeData = { list: [] }
@@ -12,7 +12,7 @@ var APIData     = { list: [] }
 var ErrorData   = { list: [] }
 
 var Points     = {
-    list: [ "/" ,
+    list: [ //"/" ,
             "/Spotify",
             "/Youtube",
             "/PDF",
@@ -146,8 +146,8 @@ var Allitems = {
 
 
 //m.route(target, "/", {
-m.route(target, "/", {
-    "/": Start,
+m.route(target, "/Start", {
+    "/Start": Start,
     "/Youtube": Youtube ,
     "/Spotify" : Spotify,
     "/PDF": PDFs,

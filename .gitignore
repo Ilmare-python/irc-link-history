@@ -1,7 +1,6 @@
 .vscode/
 env/
 __pycache__/
-*.db
 irc-link-history.code-workspace
 node_modules
 *.db

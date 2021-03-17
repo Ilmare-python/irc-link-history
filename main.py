@@ -6,7 +6,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 import sqlite3
 
-# from pydantic.dataclasses import dataclass
+from datetime import datetime
+from pydantic.dataclasses import dataclass
+
+@dataclass(frozen=True)
+class linkCollection:
+    title: str
+    uri:   str
+    time_created: datetime
 
 app = FastAPI()
 
@@ -47,19 +54,20 @@ except OperationalError as error:
     print(error)
     print("SQL operation failed.")
 
-@app.get("/")
-async def read_root():
-    return {"Message": "All your GET are belong to us!"}
-    #envarre = "%Spotify%"
-    #cursor.execute("SELECT * FROM stuff WHERE name LIKE ?", ("%Spotify%",))
-    #cursor.execute("SELECT * FROM stuff WHERE name LIKE ?", (envarre,))
 
-    #data = cursor.fetchall()
-    #return(data)
+## @app.get("/")
+## async def read_root():
+##     return {"Message": "All your GET are belong to us!"}
+##     #envarre = "%Spotify%"
+##     #cursor.execute("SELECT * FROM stuff WHERE name LIKE ?", ("%Spotify%",))
+##     #cursor.execute("SELECT * FROM stuff WHERE name LIKE ?", (envarre,))
+## 
+##     #data = cursor.fetchall()
+##     #return(data)
 
 @app.get("/Allitems")
 async def readAllFromDB():
-    cursor.execute('SELECT title, url FROM posts')
+    cursor.execute('SELECT title, url FROM posts ORDER BY id DESC')
     data = cursor.fetchall()
     return(data)
 
@@ -69,23 +77,26 @@ async def readPDFs():
     
     sql = """
     SELECT title, url FROM posts 
-    WHERE url LIKE '%.pdf'"""
+    WHERE url LIKE '%.pdf'
+    ORDER BY id DESC"""
     cursor.execute(sql)
 
     data = cursor.fetchall()
+    print(data)
     return(data)
 
 @app.get("/Spotify")
 async def readSpotify():
 
     # Original SQL search
-    # sql = """
-    # SELECT title, url FROM posts 
-    # WHERE title LIKE '%Spotify%'"""
-    # cursor.execute(sql)
+    sql = """
+    SELECT title, url FROM posts 
+    WHERE title LIKE '%Spotify%'
+    ORDER BY id DESC"""
+    cursor.execute(sql)
 
-    envarre = "%Spotify%"
-    cursor.execute("SELECT title, url FROM posts WHERE title LIKE ?", (envarre,))
+    #envarre = "%Spotify%"
+    #cursor.execute("SELECT title, url FROM posts WHERE title LIKE ?", (envarre,))
 
     data = cursor.fetchall()
     return(data)
@@ -96,11 +107,13 @@ async def readYouTube():
     
     sql = """
     SELECT title, url FROM posts 
-    WHERE title LIKE '%YouTube%'"""
+    WHERE url LIKE '%youtube%' OR '%youtu.be%'
+    ORDER BY id DESC"""
     cursor.execute(sql)
 
     data = cursor.fetchall()
     return(data)
+    
 
 # @app.get("/doc")
 # async def read_root():

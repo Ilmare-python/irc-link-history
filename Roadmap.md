@@ -12,7 +12,6 @@ Items in no particular order.
 * [Types](https://fastapi.tiangolo.com/python-types/) and
 [Python Data Classes](https://realpython.com/python-data-classes/)
 * Front end (Some of the following)
-  * Newest links first
   * Search
   * Sort
   * Filter
@@ -33,6 +32,7 @@ Items in no particular order.
 * Front End
   * Make the parsed links clickable
   * Display the links
+  * Newest links first
 * No longer assumes the database file is available
 * Remove Mithril.JS if it isn't used
 * Better error handling of HTTP-requests.

@@ -25,7 +25,7 @@ docker run -dit --name apache2 -p 80:80 -v $PWD/:/usr/local/apache2/htdocs/ http
 docker build --compress -t irc-link-history:0.1 . # Number corresponding to version number in Changelog
 docker run --name irc-link-history -p 8000:8000 irc-link-history
 # Make sure both localhost:8000 and localhost:8000 is working correctly.
-docker save irc-link-history -o irc-link-history.dockerfs
+docker save irc-link-history:latest -o irc-link-history.dockerfs
 # scp over to the production server
 ```
 
@@ -36,10 +36,6 @@ docker run --rm -dit --name apache2 -p 80:80 -v $PWD/:/usr/local/apache2/htdocs/
 docker import irc-link-history -i irc-link-history.dockerfs
 docker run --rm --name irc-link-history -p 8000:8000 irc-link-history
 ```
-
-## Bugs
-
-* Correct assignment of the `route` element to a `div`.
 
 ## Further Reading
 
